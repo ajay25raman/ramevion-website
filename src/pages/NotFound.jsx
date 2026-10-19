@@ -12,7 +12,9 @@ export default function NotFound() {
       <SEOHead
         title="404 — Page Not Found"
         description="The requested page could not be found on RAMEVION Technologies."
+        noindex={true}
       />
+
 
       <section className="flex-grow flex items-center justify-center py-24 sm:py-32 relative overflow-hidden bg-gradient-to-b from-[#111A2E] to-[#0B1020]">
         <div className="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none" aria-hidden="true" />

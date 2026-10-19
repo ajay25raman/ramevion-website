@@ -1,0 +1,6 @@
+# robots.txt for RAMEVION Technologies
+User-agent: *
+Allow: /
+
+# Sitemap reference
+Sitemap: https://ramevion-website-5crv.vercel.app/sitemap.xml
