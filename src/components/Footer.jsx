@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowUpRight, Mail, MapPin, Compass } from 'lucide-react';
+import { ArrowUpRight, Mail, Phone, MapPin, Compass, MessageSquare, ExternalLink } from 'lucide-react';
 import BrandMark from './BrandMark';
 import { contactInfo } from '../data/contactInfo';
 
@@ -8,7 +8,6 @@ const CURRENT_YEAR = new Date().getFullYear();
 
 export default function Footer() {
   const currentYear = CURRENT_YEAR;
-
 
   return (
     <footer className="bg-[#080C18] border-t border-slate-800/80 text-slate-300">
@@ -46,7 +45,7 @@ export default function Footer() {
             </Link>
 
             <p className="text-sm text-slate-400 leading-relaxed max-w-sm">
-              A technology brand dedicated to helping people and organizations turn practical ideas and business challenges into useful, reliable, and accessible digital solutions.
+              Helping entrepreneurs, businesses, and organizations build reliable, accessible, and high-performance websites and custom software solutions.
             </p>
 
             <div className="pt-2">
@@ -88,34 +87,69 @@ export default function Footer() {
                   Contact & Inquiry
                 </Link>
               </li>
+              <li>
+                <Link to="/privacy" className="hover:text-blue-400 transition-colors inline-flex items-center gap-1.5 text-xs text-slate-400">
+                  Privacy Policy
+                </Link>
+              </li>
             </ul>
           </div>
 
-          {/* Contact Details & Launch Placeholder (4 cols) */}
+          {/* Verified Contact Details (4 cols) */}
           <div className="lg:col-span-4 space-y-4">
             <h3 className="text-xs font-semibold text-slate-200 uppercase tracking-wider">
               Contact & Inquiries
             </h3>
 
-            
-            <p className="text-xs text-slate-400">
-              Official channels are being established. Replace with confirmed details before deployment.
-            </p>
-
             <div className="space-y-2.5 text-xs text-slate-300">
-              <div className="flex items-start gap-2.5 p-2.5 rounded-lg bg-slate-900/60 border border-slate-800/80">
-                <Mail className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" aria-hidden="true" />
-                <div>
-                  <span className="font-mono text-slate-200">{contactInfo.email.primary}</span>
-                  <span className="block text-[11px] text-slate-500 font-sans mt-0.5">[Configurable Placeholder]</span>
+              {/* Contact Person & Phone */}
+              <div className="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800/80 space-y-1">
+                <div className="flex items-center justify-between">
+                  <span className="font-semibold text-white">{contactInfo.contactPerson.name}</span>
+                  <a
+                    href={contactInfo.phone.whatsappUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-[11px] text-emerald-400 hover:text-emerald-300 font-medium"
+                  >
+                    <MessageSquare className="w-3 h-3" />
+                    <span>WhatsApp</span>
+                  </a>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Phone className="w-3.5 h-3.5 text-blue-400 shrink-0" aria-hidden="true" />
+                  <a href={contactInfo.phone.tel} className="font-mono text-slate-200 hover:text-blue-400 transition-colors">
+                    {contactInfo.phone.display}
+                  </a>
                 </div>
               </div>
 
+              {/* Email */}
               <div className="flex items-start gap-2.5 p-2.5 rounded-lg bg-slate-900/60 border border-slate-800/80">
-                <MapPin className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" aria-hidden="true" />
-                <div>
-                  <span className="text-slate-200">{contactInfo.location.display}</span>
-                  <span className="block text-[11px] text-slate-500 mt-0.5">{contactInfo.location.note}</span>
+                <Mail className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" aria-hidden="true" />
+                <div className="min-w-0">
+                  <a href={contactInfo.email.mailto} className="font-mono text-slate-200 hover:text-blue-400 truncate block transition-colors">
+                    {contactInfo.email.primary}
+                  </a>
+                </div>
+              </div>
+
+              {/* Service Location with Google Maps link */}
+              <div className="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800/80 space-y-1">
+                <div className="flex items-start gap-2.5">
+                  <MapPin className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" aria-hidden="true" />
+                  <div>
+                    <span className="text-slate-200 block">{contactInfo.location.display}</span>
+                    <a
+                      href={contactInfo.location.mapsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-[11px] text-blue-400 hover:text-blue-300 mt-1"
+                    >
+                      <span>Search on Google Maps</span>
+                      <ExternalLink className="w-2.5 h-2.5" />
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -128,7 +162,6 @@ export default function Footer() {
                 <span>Discuss Your Project</span>
                 <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" aria-hidden="true" />
               </Link>
-
             </div>
           </div>
 
@@ -141,9 +174,15 @@ export default function Footer() {
           <p>
             © {currentYear} RAMEVION Technologies. All rights reserved.
           </p>
-          <p className="text-[11px] text-slate-500 max-w-md">
-            RAMEVION Technologies is an emerging technology brand. All project items displayed in the portfolio represent illustrative concepts and design prototypes.
-          </p>
+          <div className="flex items-center gap-4 text-[11px] text-slate-400">
+            <Link to="/privacy" className="hover:text-blue-400 transition-colors">
+              Privacy Policy
+            </Link>
+            <span>•</span>
+            <span className="text-slate-500">
+              Service Location: Maker, Saran, Bihar
+            </span>
+          </div>
         </div>
       </div>
     </footer>

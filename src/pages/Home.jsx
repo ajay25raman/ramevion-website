@@ -10,8 +10,15 @@ import {
   Briefcase, 
   Building2, 
   Lightbulb, 
-  Cpu
+  Cpu,
+  Phone,
+  Mail,
+  MapPin,
+  MessageSquare,
+  ExternalLink
 } from 'lucide-react';
+
+import { contactInfo } from '../data/contactInfo';
 
 import PageContainer from '../components/PageContainer';
 import SectionHeading from '../components/SectionHeading';
@@ -562,7 +569,55 @@ export default function Home() {
                   <span>Discuss Your Project</span>
                   <ArrowRight className="w-5 h-5" aria-hidden="true" />
                 </Link>
+              </div>
 
+              {/* Direct Quick-Contact Strip */}
+              <div className="pt-6 mt-6 border-t border-blue-500/20 max-w-2xl mx-auto">
+                <p className="text-xs uppercase tracking-wider text-blue-300 font-semibold mb-3">
+                  Or reach Raman Kumar directly:
+                </p>
+                <div className="flex flex-wrap items-center justify-center gap-3 text-xs">
+                  <a
+                    href={contactInfo.phone.whatsappUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600/90 hover:bg-emerald-500 text-white font-semibold transition-colors shadow-sm"
+                  >
+                    <MessageSquare className="w-4 h-4" />
+                    <span>WhatsApp</span>
+                  </a>
+
+                  <a
+                    href={contactInfo.phone.tel}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-mono transition-colors"
+                  >
+                    <Phone className="w-3.5 h-3.5 text-blue-400" />
+                    <span>{contactInfo.phone.display}</span>
+                  </a>
+
+                  <a
+                    href={contactInfo.email.mailto}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-mono transition-colors"
+                  >
+                    <Mail className="w-3.5 h-3.5 text-blue-400" />
+                    <span>{contactInfo.email.primary}</span>
+                  </a>
+                </div>
+
+                <div className="mt-3 text-[11px] text-slate-400 flex items-center justify-center gap-1.5">
+                  <MapPin className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+                  <span>Service Location: Maker, Saran, Bihar – 841215</span>
+                  <span>•</span>
+                  <a
+                    href={contactInfo.location.mapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-400 hover:underline inline-flex items-center gap-0.5"
+                  >
+                    <span>View Map</span>
+                    <ExternalLink className="w-2.5 h-2.5" />
+                  </a>
+                </div>
               </div>
 
               <p className="text-xs text-slate-400 pt-2">
