@@ -7,10 +7,13 @@ export default function SEOHead({ title, description, canonical, noindex = false
   const location = useLocation();
 
   useEffect(() => {
-    const fullTitle = title 
-      ? `${title} | RAMEVION Technologies` 
-      : 'RAMEVION Technologies — Engineering the Future';
+    const fullTitle = !title
+      ? 'RAMEVION Technologies — Engineering the Future'
+      : title.includes('RAMEVION Technologies')
+        ? title
+        : `${title} | RAMEVION Technologies`;
     document.title = fullTitle;
+
 
     const defaultDesc = 'RAMEVION Technologies — Born in a Village. Built for the World. Thoughtful, accessible, and dependable digital solutions from website and mobile app development to custom software.';
     const finalDesc = description || defaultDesc;

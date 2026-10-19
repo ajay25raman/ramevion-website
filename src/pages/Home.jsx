@@ -337,28 +337,29 @@ export default function Home() {
             <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="p-5 rounded-xl bg-[#111A2E] border border-slate-800">
                 <span className="text-xs font-mono font-bold text-blue-400 block mb-1">01 / EMPATHY</span>
-                <h4 className="text-sm font-bold text-white mb-1.5">Understanding First</h4>
+                <h3 className="text-sm font-bold text-white mb-1.5">Understanding First</h3>
                 <p className="text-xs text-slate-400">Taking the time to listen before jumping into technical solutions.</p>
               </div>
 
               <div className="p-5 rounded-xl bg-[#111A2E] border border-slate-800">
                 <span className="text-xs font-mono font-bold text-blue-400 block mb-1">02 / PRAGMATISM</span>
-                <h4 className="text-sm font-bold text-white mb-1.5">Realistic Planning</h4>
+                <h3 className="text-sm font-bold text-white mb-1.5">Realistic Planning</h3>
                 <p className="text-xs text-slate-400">Clear milestones, sensible budgets, and no unnecessary bloat.</p>
               </div>
 
               <div className="p-5 rounded-xl bg-[#111A2E] border border-slate-800">
                 <span className="text-xs font-mono font-bold text-blue-400 block mb-1">03 / PRECISION</span>
-                <h4 className="text-sm font-bold text-white mb-1.5">Verified Testing</h4>
+                <h3 className="text-sm font-bold text-white mb-1.5">Verified Testing</h3>
                 <p className="text-xs text-slate-400">Rigorous functional checks across real mobile and desktop viewports.</p>
               </div>
 
               <div className="p-5 rounded-xl bg-[#111A2E] border border-slate-800">
                 <span className="text-xs font-mono font-bold text-blue-400 block mb-1">04 / STEWARDSHIP</span>
-                <h4 className="text-sm font-bold text-white mb-1.5">Reliable Handover</h4>
+                <h3 className="text-sm font-bold text-white mb-1.5">Reliable Handover</h3>
                 <p className="text-xs text-slate-400">Complete ownership of code, documentation, and ongoing support options.</p>
               </div>
             </div>
+
 
           </div>
         </PageContainer>

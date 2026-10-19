@@ -90,6 +90,7 @@ export default function Portfolio() {
           </div>
 
           {/* Projects Grid */}
+          <h2 className="sr-only">Concept Prototypes Showcase</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
             {filteredProjects.map((project) => (
               <ProjectCard
@@ -133,7 +134,7 @@ export default function Portfolio() {
                 <span className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-400 font-mono text-xs font-bold flex items-center justify-center mb-3">
                   01
                 </span>
-                <h4 className="text-base font-bold text-white mb-1.5">Direct Code Ownership</h4>
+                <h3 className="text-base font-bold text-white mb-1.5">Direct Code Ownership</h3>
                 <p className="text-xs text-slate-400 leading-relaxed">
                   You receive full source code access, Git repository transfer, and deployment credentials with no lock-ins.
                 </p>
@@ -143,7 +144,7 @@ export default function Portfolio() {
                 <span className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-400 font-mono text-xs font-bold flex items-center justify-center mb-3">
                   02
                 </span>
-                <h4 className="text-base font-bold text-white mb-1.5">Milestone Sign-Offs</h4>
+                <h3 className="text-base font-bold text-white mb-1.5">Milestone Sign-Offs</h3>
                 <p className="text-xs text-slate-400 leading-relaxed">
                   Payments and deliverables are tied to verified demo milestones agreed transparently before starting.
                 </p>
@@ -153,12 +154,13 @@ export default function Portfolio() {
                 <span className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-400 font-mono text-xs font-bold flex items-center justify-center mb-3">
                   03
                 </span>
-                <h4 className="text-base font-bold text-white mb-1.5">Post-Launch Support</h4>
+                <h3 className="text-base font-bold text-white mb-1.5">Post-Launch Support</h3>
                 <p className="text-xs text-slate-400 leading-relaxed">
                   Initial warranty period for bug fixes followed by flexible, straightforward maintenance arrangements.
                 </p>
               </div>
             </div>
+
 
             <div className="pt-6">
               <Link

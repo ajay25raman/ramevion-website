@@ -442,9 +442,10 @@ export default function Contact() {
                   <span>What Information Helps Most?</span>
                 </div>
 
-                <h4 className="text-base font-bold text-white">
+                <h3 className="text-base font-bold text-white">
                   Preparing for an Initial Discussion
-                </h4>
+                </h3>
+
 
                 <p className="text-xs text-slate-300 leading-relaxed">
                   You don’t need an exhaustive 50-page document. When reaching out, these three basic points help us give you the most thoughtful feedback:

@@ -59,9 +59,9 @@ export default function Footer() {
 
           {/* Quick Links (3 cols) */}
           <div className="lg:col-span-3 space-y-4">
-            <h2 className="text-xs font-semibold text-slate-200 uppercase tracking-wider">
+            <h3 className="text-xs font-semibold text-slate-200 uppercase tracking-wider">
               Navigation
-            </h2>
+            </h3>
             <ul className="space-y-2.5 text-sm" role="list">
               <li>
                 <Link to="/" className="hover:text-blue-400 transition-colors inline-flex items-center gap-1.5">
@@ -93,9 +93,10 @@ export default function Footer() {
 
           {/* Contact Details & Launch Placeholder (4 cols) */}
           <div className="lg:col-span-4 space-y-4">
-            <h2 className="text-xs font-semibold text-slate-200 uppercase tracking-wider">
+            <h3 className="text-xs font-semibold text-slate-200 uppercase tracking-wider">
               Contact & Inquiries
-            </h2>
+            </h3>
+
             
             <p className="text-xs text-slate-400">
               Official channels are being established. Replace with confirmed details before deployment.
