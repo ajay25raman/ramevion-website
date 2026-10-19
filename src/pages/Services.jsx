@@ -260,9 +260,10 @@ export default function Services() {
                     to="/contact"
                     className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-500 rounded-xl transition-colors shadow-sm shadow-blue-600/30"
                   >
-                    <span>Describe Your Situation Directly</span>
+                    <span>Discuss Your Project</span>
                     <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
                   </Link>
+
                 </div>
               </div>
             )}

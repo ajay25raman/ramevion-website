@@ -125,9 +125,10 @@ export default function Footer() {
                 to="/contact"
                 className="inline-flex items-center gap-1 text-xs font-medium text-blue-400 hover:text-blue-300 transition-colors group"
               >
-                <span>Initiate a project conversation</span>
+                <span>Discuss Your Project</span>
                 <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" aria-hidden="true" />
               </Link>
+
             </div>
           </div>
 

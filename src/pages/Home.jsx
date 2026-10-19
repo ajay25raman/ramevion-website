@@ -158,9 +158,10 @@ export default function Home() {
                   to="/contact"
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-500 active:bg-blue-700 rounded-xl transition-all shadow-lg shadow-blue-600/25 hover:shadow-blue-600/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
                 >
-                  <span>Discuss Your Idea</span>
+                  <span>Discuss Your Project</span>
                   <ArrowRight className="w-4 h-4" aria-hidden="true" />
                 </Link>
+
 
                 <Link
                   to="/services"
@@ -558,9 +559,10 @@ export default function Home() {
                   to="/contact"
                   className="inline-flex items-center gap-2.5 px-8 py-4 text-base font-bold text-white bg-blue-600 hover:bg-blue-500 active:bg-blue-700 rounded-xl transition-all shadow-xl shadow-blue-600/30 hover:shadow-blue-600/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
                 >
-                  <span>Start a Project Conversation</span>
+                  <span>Discuss Your Project</span>
                   <ArrowRight className="w-5 h-5" aria-hidden="true" />
                 </Link>
+
               </div>
 
               <p className="text-xs text-slate-400 pt-2">

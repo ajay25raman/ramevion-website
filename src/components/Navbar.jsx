@@ -101,7 +101,7 @@ export default function Navbar() {
               to="/contact"
               className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-500 active:bg-blue-700 rounded-xl transition-all shadow-sm shadow-blue-500/25 hover:shadow-blue-500/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
             >
-              <span>Discuss Your Idea</span>
+              <span>Discuss Your Project</span>
               <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
           </div>
@@ -157,12 +157,13 @@ export default function Navbar() {
               onClick={handleNavClick}
               className="w-full flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-500 rounded-xl shadow-md shadow-blue-600/30 transition-colors"
             >
-              <span>Discuss Your Idea</span>
+              <span>Discuss Your Project</span>
               <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
           </div>
         </div>
       )}
+
     </header>
   );
 }

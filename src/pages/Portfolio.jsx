@@ -167,9 +167,10 @@ export default function Portfolio() {
                 to="/contact"
                 className="inline-flex items-center gap-2 px-6 py-3.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-500 rounded-xl transition-all shadow-md shadow-blue-600/30"
               >
-                <span>Discuss a Custom Solution for Your Business</span>
+                <span>Discuss Your Project</span>
                 <ArrowRight className="w-4 h-4" aria-hidden="true" />
               </Link>
+
             </div>
           </div>
         </PageContainer>

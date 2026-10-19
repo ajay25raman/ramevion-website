@@ -4,16 +4,23 @@ import {
   Mail, 
   AlertCircle, 
   CheckCircle2, 
-  Info, 
+  Info,
   Send, 
   Sparkles, 
-  HelpCircle 
+  HelpCircle,
+  Copy,
+  Check,
+  Code2,
+  ChevronDown,
+  ChevronUp,
+  Clock,
+  MapPin,
+  ShieldAlert
 } from 'lucide-react';
 import PageContainer from '../components/PageContainer';
 import PageHero from '../components/PageHero';
 import SEOHead from '../components/SEOHead';
 import { contactInfo } from '../data/contactInfo';
-
 
 export default function Contact() {
   const [searchParams] = useSearchParams();
@@ -31,9 +38,16 @@ export default function Contact() {
     description: '',
   });
 
-  // Client-side validation state
+  // Validation & status states
   const [errors, setErrors] = useState({});
-  const [attemptedSubmit, setAttemptedSubmit] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState('idle'); // 'idle' | 'success' | 'error'
+  const [submitErrorMsg, setSubmitErrorMsg] = useState('');
+  const [copiedSummary, setCopiedSummary] = useState(false);
+  const [copiedEmail, setCopiedEmail] = useState(false);
+  const [showIntegrationGuide, setShowIntegrationGuide] = useState(false);
+
+  const hasEndpoint = Boolean(contactInfo.formEndpoint && contactInfo.formEndpoint.trim());
 
   const organizationTypes = [
     'Individual / Village Entrepreneur',
@@ -73,6 +87,9 @@ export default function Contact() {
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: '' }));
     }
+    if (submitStatus !== 'idle') {
+      setSubmitStatus('idle');
+    }
   };
 
   const validate = () => {
@@ -88,38 +105,153 @@ export default function Contact() {
     if (!formData.description.trim()) {
       newErrors.description = 'Please write a brief note about what you wish to build or solve.';
     } else if (formData.description.trim().length < 10) {
-      newErrors.description = 'Please provide at least a few words describing your idea.';
+      newErrors.description = 'Please provide at least 10 characters describing your idea or problem.';
     }
     return newErrors;
   };
 
-  // Safe prototype submission interception
-  const handlePrototypeSubmit = (e) => {
+  const generateSummaryText = () => {
+    return [
+      `=== PROJECT DISCUSSION INQUIRY ===`,
+      `To: ${contactInfo.companyName} (${contactInfo.email.primary})`,
+      `--------------------------------------------------`,
+      `Full Name: ${formData.fullName.trim() || '[Not Provided]'}`,
+      `Email Address: ${formData.email.trim() || '[Not Provided]'}`,
+      `Phone / WhatsApp: ${formData.phone.trim() || '[Not Provided]'}`,
+      `Customer / Organization: ${formData.organizationType}`,
+      `Service Needed: ${formData.projectType}`,
+      `Approximate Budget: ${formData.approximateBudget || 'To be evaluated'}`,
+      `Target Timeline: ${formData.desiredTimeline || 'To be discussed'}`,
+      ``,
+      `Project Description / Problem Statement:`,
+      formData.description.trim() || '[No description entered]',
+      `--------------------------------------------------`,
+      `Source: Official RAMEVION Technologies Inquiry Portal`
+    ].join('\n');
+  };
+
+  // Direct Submission Handler (for configured endpoints) or Mailto Fallback
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
-      setAttemptedSubmit(false);
       return;
     }
-    // Form is valid: show prototype notice without transmitting or storing data
+
     setErrors({});
-    setAttemptedSubmit(true);
+
+    // Case 1: Backend Endpoint is configured
+    if (hasEndpoint) {
+      setIsSubmitting(true);
+      setSubmitStatus('idle');
+      setSubmitErrorMsg('');
+
+      try {
+        const response = await fetch(contactInfo.formEndpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            ...formData,
+            summary: generateSummaryText()
+          })
+        });
+
+        if (response.ok) {
+          setSubmitStatus('success');
+          setFormData({
+            fullName: '',
+            email: '',
+            phone: '',
+            organizationType: 'Individual / Village Entrepreneur',
+            projectType: 'Website Development',
+            approximateBudget: '',
+            desiredTimeline: '',
+            description: '',
+          });
+        } else {
+          const errData = await response.json().catch(() => ({}));
+          throw new Error(errData.message || `Submission failed with status: ${response.status}`);
+        }
+      } catch (err) {
+        setSubmitStatus('error');
+        setSubmitErrorMsg(err.message || 'Network error occurred while sending your inquiry.');
+      } finally {
+        setIsSubmitting(false);
+      }
+      return;
+    }
+
+    // Case 2: Frontend-only mode (No fake submission! Opens pre-filled mailto directly)
+    triggerMailto();
+  };
+
+  const triggerMailto = () => {
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    const recipient = contactInfo.email.primary;
+    const subject = encodeURIComponent(`[Project Discussion] ${formData.projectType} — ${formData.fullName}`);
+    const body = encodeURIComponent(generateSummaryText());
+    const mailtoUrl = `mailto:${recipient}?subject=${subject}&body=${body}`;
+
+    window.location.href = mailtoUrl;
+  };
+
+  const handleCopySummary = async () => {
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(generateSummaryText());
+      setCopiedSummary(true);
+      setTimeout(() => setCopiedSummary(false), 3000);
+    } catch {
+      // Fallback for older browsers
+      const textarea = document.createElement('textarea');
+      textarea.value = generateSummaryText();
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      setCopiedSummary(true);
+      setTimeout(() => setCopiedSummary(false), 3000);
+    }
+  };
+
+  const handleCopyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(contactInfo.email.primary);
+      setCopiedEmail(true);
+      setTimeout(() => setCopiedEmail(false), 3000);
+    } catch {
+      setCopiedEmail(true);
+      setTimeout(() => setCopiedEmail(false), 3000);
+    }
   };
 
   return (
     <>
       <SEOHead
-        title="Contact & Project Inquiries"
-        description="Begin a project discussion with RAMEVION Technologies. Share your idea, requirements, and challenges with an engineering team that listens carefully."
+        title="Contact & Project Discussions"
+        description="Discuss your project with RAMEVION Technologies. Share your requirements directly with our engineering team for thoughtful, realistic software solutions."
       />
 
       {/* Page Hero */}
       <PageHero
         badge="Start a Conversation"
-        title="Tell Us What You Want"
-        highlight="To Build or Solve."
-        description="Whether you have a fully formed technical requirement or simply an idea you would like to explore, we invite an honest, straightforward discussion."
+        title="Discuss Your Project"
+        highlight="With Our Engineering Team."
+        description="Whether you have a fully formed technical requirement or simply an early idea you want to evaluate, we welcome an honest, practical discussion."
         breadcrumbs={[{ name: 'Contact' }]}
       />
 
@@ -136,7 +268,7 @@ export default function Contact() {
                 <div className="border-b border-slate-800 pb-5 mb-6">
                   <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-blue-500/10 text-blue-400 border border-blue-500/20 mb-2">
                     <Sparkles className="w-3.5 h-3.5" aria-hidden="true" />
-                    <span>Project Discussion Form</span>
+                    <span>Project Discussion Portal</span>
                   </div>
                   <h2 className="text-xl sm:text-2xl font-bold text-white">
                     Tell Us About Your Requirement
@@ -146,32 +278,57 @@ export default function Contact() {
                   </p>
                 </div>
 
-                {/* Static Site Prototype Warning Banner */}
-                <div className="mb-6 p-4 rounded-xl bg-amber-500/10 border border-amber-500/25 text-amber-200 text-xs space-y-1.5">
-                  <div className="flex items-center gap-2 font-bold text-amber-300">
-                    <AlertCircle className="w-4 h-4 shrink-0" aria-hidden="true" />
-                    <span>Prototype Form Mode (No Live Backend Attached)</span>
+                {/* Transparent Operation Banner */}
+                {hasEndpoint ? (
+                  <div className="mb-6 p-4 rounded-xl bg-blue-500/10 border border-blue-500/30 text-blue-200 text-xs space-y-1.5">
+                    <div className="flex items-center gap-2 font-bold text-blue-300">
+                      <CheckCircle2 className="w-4 h-4 shrink-0" aria-hidden="true" />
+                      <span>Direct Submission Active</span>
+                    </div>
+                    <p className="leading-relaxed text-blue-200/90">
+                      Inquiries submitted through this form are securely transmitted to our backend inbox.
+                    </p>
                   </div>
-                  <p className="leading-relaxed">
-                    This inquiry form is a functional frontend UI preview. No data is stored, sent, or transmitted across the web until our production backend contact service is configured.
-                  </p>
-                </div>
-
-                {/* Attempted Submit Feedback Notification */}
-                {attemptedSubmit && (
-                  <div className="mb-6 p-4 rounded-xl bg-blue-500/10 border border-blue-500/30 text-blue-200 text-xs space-y-2 animate-in fade-in duration-200">
-                    <div className="flex items-center gap-2 font-bold text-blue-300 text-sm">
+                ) : (
+                  <div className="mb-6 p-4 rounded-xl bg-slate-900/90 border border-blue-500/30 text-slate-300 text-xs space-y-2">
+                    <div className="flex items-center gap-2 font-bold text-blue-400">
                       <Info className="w-4 h-4 shrink-0" aria-hidden="true" />
-                      <span>Validation Passed (Preview Prototype Safe Intercept)</span>
+                      <span>Direct Client Communication System</span>
+                    </div>
+                    <p className="leading-relaxed text-slate-300">
+                      To safeguard your privacy and avoid unverified third-party trackers, this form lets you pre-format your project details. You can launch your email client with all fields ready to send, or copy the formatted text with one click.
+                    </p>
+                  </div>
+                )}
+
+                {/* Submission Success State */}
+                {submitStatus === 'success' && (
+                  <div className="mb-6 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-200 text-xs space-y-2 animate-in fade-in duration-200">
+                    <div className="flex items-center gap-2 font-bold text-emerald-300 text-sm">
+                      <CheckCircle2 className="w-4 h-4 shrink-0" aria-hidden="true" />
+                      <span>Enquiry Transmitted Successfully</span>
                     </div>
                     <p className="leading-relaxed">
-                      Your form inputs are validated correctly according to client-side checks. Because this site is operating in frontend-only prototype mode, your details have not been sent over any network. Prior to launch, replace this interceptor with your verified form endpoint (e.g. Formspree, Resend, or your custom API).
+                      Thank you for reaching out. We have received your project details and will review your requirements.
+                    </p>
+                  </div>
+                )}
+
+                {/* Submission Error State */}
+                {submitStatus === 'error' && (
+                  <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-200 text-xs space-y-2 animate-in fade-in duration-200">
+                    <div className="flex items-center gap-2 font-bold text-red-300 text-sm">
+                      <ShieldAlert className="w-4 h-4 shrink-0" aria-hidden="true" />
+                      <span>Submission Could Not Be Completed</span>
+                    </div>
+                    <p className="leading-relaxed">
+                      {submitErrorMsg || 'Please use the "Open in Email Client" button or copy the inquiry details below.'}
                     </p>
                   </div>
                 )}
 
                 {/* Form */}
-                <form onSubmit={handlePrototypeSubmit} noValidate className="space-y-5">
+                <form onSubmit={handleFormSubmit} noValidate className="space-y-5">
                   
                   {/* Name and Email */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -361,74 +518,157 @@ export default function Contact() {
                     )}
                   </div>
 
-                  {/* Submit Button */}
-                  <div className="pt-2">
-                    <button
-                      type="submit"
-                      className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-500 active:bg-blue-700 rounded-xl transition-all shadow-md shadow-blue-600/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
-                    >
-                      <Send className="w-4 h-4" aria-hidden="true" />
-                      <span>Validate & Submit Enquiry (Prototype Test)</span>
-                    </button>
-                    <p className="text-[11px] text-slate-400 text-center mt-2.5">
-                      Submitting triggers frontend validation without transmitting personal data.
+                  {/* Dual Action Enquiry Triggers */}
+                  <div className="pt-3 space-y-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {hasEndpoint ? (
+                        <button
+                          type="submit"
+                          disabled={isSubmitting}
+                          className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-500 active:bg-blue-700 disabled:opacity-50 rounded-xl transition-all shadow-md shadow-blue-600/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+                        >
+                          <Send className="w-4 h-4" aria-hidden="true" />
+                          <span>{isSubmitting ? 'Sending Enquiry...' : 'Discuss Your Project'}</span>
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={triggerMailto}
+                          className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-500 active:bg-blue-700 rounded-xl transition-all shadow-md shadow-blue-600/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+                        >
+                          <Mail className="w-4 h-4" aria-hidden="true" />
+                          <span>Send via Email App</span>
+                        </button>
+                      )}
+
+                      <button
+                        type="button"
+                        onClick={handleCopySummary}
+                        className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold text-slate-200 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+                      >
+                        {copiedSummary ? (
+                          <>
+                            <Check className="w-4 h-4 text-emerald-400" aria-hidden="true" />
+                            <span className="text-emerald-300">Inquiry Details Copied!</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="w-4 h-4 text-slate-400" aria-hidden="true" />
+                            <span>Copy Inquiry Summary</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+
+                    <p className="text-[11px] text-slate-400 text-center leading-relaxed">
+                      {hasEndpoint 
+                        ? 'Direct submission is processed securely.' 
+                        : 'Clicking "Send via Email App" opens your email client with all details filled. You can also copy the formatted inquiry and paste it into any chat or email.'}
                     </p>
                   </div>
 
                 </form>
+
+                {/* Collapsible Backend Integration Guide for Owner / Developers */}
+                <div className="mt-8 pt-6 border-t border-slate-800">
+                  <button
+                    type="button"
+                    onClick={() => setShowIntegrationGuide(prev => !prev)}
+                    className="w-full flex items-center justify-between text-left text-xs font-medium text-slate-400 hover:text-slate-200 transition-colors py-1"
+                  >
+                    <span className="flex items-center gap-2">
+                      <Code2 className="w-4 h-4 text-blue-400" />
+                      <span>Technical Note: Backend & Email Form Integration</span>
+                    </span>
+                    {showIntegrationGuide ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                  </button>
+
+                  {showIntegrationGuide && (
+                    <div className="mt-4 p-4 rounded-2xl bg-slate-900/90 border border-slate-800 text-xs text-slate-300 space-y-3 leading-relaxed animate-in fade-in duration-150">
+                      <p className="font-semibold text-white">
+                        How to connect live email dispatch to this static Vercel deployment:
+                      </p>
+                      <ol className="list-decimal list-inside space-y-1.5 text-slate-300">
+                        <li>
+                          <strong>Option A (Zero-backend service):</strong> Create a free form endpoint on <span className="font-mono text-blue-300">Formspree.io</span> or <span className="font-mono text-blue-300">Web3Forms.com</span> and set the URL in <code className="text-blue-300 bg-slate-800 px-1 py-0.5 rounded">src/data/contactInfo.js</code> under <code className="text-blue-300 bg-slate-800 px-1 py-0.5 rounded">formEndpoint</code>.
+                        </li>
+                        <li>
+                          <strong>Option B (Vercel Serverless Function):</strong> Add an <code className="text-blue-300 bg-slate-800 px-1 py-0.5 rounded">/api/contact.js</code> endpoint utilizing Resend or Nodemailer with transactional SMTP credentials.
+                        </li>
+                        <li>
+                          <strong>Option C (Current Safe Default):</strong> The dual mailto + clipboard copy workflow guarantees zero data loss, zero third-party leakage, and immediate receipt in your inbox.
+                        </li>
+                      </ol>
+                    </div>
+                  )}
+                </div>
+
               </div>
             </div>
 
             {/* Right Column: Contact Channels & Help Guide (5 cols) */}
             <div className="lg:col-span-5 space-y-8">
               
-              {/* Official Contact Placeholders */}
-              <div className="rounded-3xl bg-[#111A2E]/90 border border-slate-800/80 p-7 space-y-6">
+              {/* Official Contact Channels */}
+              <div className="rounded-3xl bg-[#111A2E]/90 border border-slate-800/80 p-7 space-y-6 shadow-xl">
                 <h3 className="text-lg font-bold text-white flex items-center gap-2">
                   <Mail className="w-5 h-5 text-blue-400" aria-hidden="true" />
                   <span>Direct Communication Channels</span>
                 </h3>
 
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  Notice for visitors: Official enterprise email and hotlines will be activated upon public launch. The details below are clear placeholders for configuration.
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  We encourage prospective clients and partners to reach out directly. Every inquiry is reviewed thoughtfully by our engineering team.
                 </p>
 
                 <div className="space-y-4 text-xs">
-                  {/* Email */}
-                  <div className="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800">
-                    <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400 block mb-1">
-                      Inquiry Inbox
-                    </span>
-                    <span className="font-mono text-sm text-blue-300 font-semibold block">
-                      {contactInfo.email.primary}
-                    </span>
-                    <span className="text-[11px] text-slate-500 block mt-1">
-                      {contactInfo.email.note}
-                    </span>
+                  {/* Email with Quick Copy */}
+                  <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 flex items-center justify-between gap-3">
+                    <div className="min-w-0">
+                      <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400 block mb-1">
+                        Official Inquiry Inbox
+                      </span>
+                      <a 
+                        href={`mailto:${contactInfo.email.primary}`}
+                        className="font-mono text-sm text-blue-400 hover:underline font-semibold block truncate"
+                      >
+                        {contactInfo.email.primary}
+                      </a>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleCopyEmail}
+                      title="Copy email address"
+                      className="shrink-0 p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition-colors"
+                      aria-label="Copy official email address"
+                    >
+                      {copiedEmail ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                    </button>
                   </div>
 
-                  {/* Region */}
-                  <div className="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800">
-                    <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400 block mb-1">
-                      Operating Model
-                    </span>
+                  {/* Region & Operational Model */}
+                  <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800">
+                    <div className="flex items-center gap-2 text-[11px] font-mono uppercase tracking-wider text-slate-400 mb-1">
+                      <MapPin className="w-3.5 h-3.5 text-blue-400" />
+                      <span>Operating Footprint</span>
+                    </div>
                     <span className="text-sm text-slate-200 font-medium block">
                       {contactInfo.location.display}
                     </span>
-                    <span className="text-[11px] text-slate-500 block mt-1">
+                    <span className="text-[11px] text-slate-400 block mt-1 leading-relaxed">
                       {contactInfo.location.note}
                     </span>
                   </div>
 
-                  {/* Hours */}
-                  <div className="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800">
-                    <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400 block mb-1">
-                      Consultation Schedule
-                    </span>
+                  {/* Consultation Schedule */}
+                  <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800">
+                    <div className="flex items-center gap-2 text-[11px] font-mono uppercase tracking-wider text-slate-400 mb-1">
+                      <Clock className="w-3.5 h-3.5 text-blue-400" />
+                      <span>Consultation Schedule</span>
+                    </div>
                     <span className="text-sm text-slate-200 font-medium block">
                       {contactInfo.workingHours.display}
                     </span>
-                    <span className="text-[11px] text-slate-500 block mt-1">
+                    <span className="text-[11px] text-slate-400 block mt-1">
                       {contactInfo.workingHours.note}
                     </span>
                   </div>
@@ -436,7 +676,7 @@ export default function Contact() {
               </div>
 
               {/* Guide: What information helps start a conversation? */}
-              <div className="rounded-3xl bg-[#0E1528] border border-blue-500/20 p-7 space-y-4">
+              <div className="rounded-3xl bg-[#0E1528] border border-blue-500/20 p-7 space-y-4 shadow-xl">
                 <div className="flex items-center gap-2 text-xs font-semibold text-blue-400 uppercase tracking-wider">
                   <HelpCircle className="w-4 h-4" aria-hidden="true" />
                   <span>What Information Helps Most?</span>
@@ -446,9 +686,8 @@ export default function Contact() {
                   Preparing for an Initial Discussion
                 </h3>
 
-
                 <p className="text-xs text-slate-300 leading-relaxed">
-                  You don’t need an exhaustive 50-page document. When reaching out, these three basic points help us give you the most thoughtful feedback:
+                  You don’t need an exhaustive specification. When reaching out, these three basic points help us give you the most thoughtful feedback:
                 </p>
 
                 <ul className="space-y-2.5 text-xs text-slate-300" role="list">
