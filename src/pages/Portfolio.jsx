@@ -29,8 +29,9 @@ export default function Portfolio() {
   return (
     <>
       <SEOHead
-        title="Portfolio & Concept Prototypes"
-        description="Explore illustrative software concepts and prototypes by RAMEVION Technologies. Demonstrating practical technical architecture, usability, and thoughtful engineering."
+        title="Software & Web Development Portfolio | RAMEVION Technologies"
+        description="Explore concept prototypes by RAMEVION Technologies showcasing custom software, mobile app development, and responsive website architecture built from Bihar."
+        canonical="https://ramevion-website-5crv.vercel.app/portfolio"
       />
 
       {/* Page Hero */}

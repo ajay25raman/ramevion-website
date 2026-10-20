@@ -82,16 +82,17 @@ export default function Services() {
   return (
     <>
       <SEOHead
-        title="Services & Engineering Capabilities"
-        description="Explore RAMEVION Technologies digital services: Website Development, Mobile Apps, Backend APIs, Custom Software, UI/UX Design, and Maintenance."
+        title="Software, Web & Mobile App Services | RAMEVION Technologies"
+        description="Explore our services: website development, mobile app development, custom software development, and UI/UX design tailored for businesses in Bihar and beyond."
+        canonical="https://ramevion-website-5crv.vercel.app/services"
       />
 
       {/* Page Hero */}
       <PageHero
         badge="Engineering Services"
-        title="Solutions Tailored to"
-        highlight="Your Needs & Budget."
-        description="We believe in sensible planning. Services should be selected around actual business hurdles and realistic goals, not buzzwords. Explore our core service capabilities below."
+        title="Software, Web & Mobile App Services"
+        highlight="Tailored to Your Budget."
+        description="We believe in sensible planning. Practical website development, mobile app development, and custom software engineered for businesses in Bihar, pan-India, and globally."
         breadcrumbs={[{ name: 'Services' }]}
       />
 

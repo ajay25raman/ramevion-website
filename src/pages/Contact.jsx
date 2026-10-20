@@ -242,8 +242,9 @@ export default function Contact() {
   return (
     <>
       <SEOHead
-        title="Contact Raman Kumar & Project Inquiries"
-        description="Connect with Raman Kumar at RAMEVION Technologies. Based in Maker, Saran, Bihar – 841215. Call +91 91177 19625 or email ajaykumar.dev25@gmail.com to discuss your project."
+        title="Contact RAMEVION Technologies | Software Development in Bihar"
+        description="Contact Raman Kumar at RAMEVION Technologies in Maker, Saran, Bihar. Discuss website development, mobile apps, or custom software projects directly today."
+        canonical="https://ramevion-website-5crv.vercel.app/contact"
       />
 
       {/* Page Hero */}

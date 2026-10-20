@@ -109,8 +109,9 @@ export default function Home() {
   return (
     <>
       <SEOHead
-        title="RAMEVION Technologies — Engineering the Future"
-        description="Born in a Village. Built for the World. Thoughtful, accessible, and reliable digital solutions from website and mobile app development to custom software."
+        title="RAMEVION Technologies — Web, App & Custom Software Development"
+        description="RAMEVION Technologies delivers custom software development, mobile apps, and website development from Bihar for businesses and innovators worldwide."
+        canonical="https://ramevion-website-5crv.vercel.app/"
       />
 
       {/* SECTION A: HERO */}
@@ -141,7 +142,7 @@ export default function Home() {
 
               {/* Supporting Message */}
               <p className="text-base sm:text-lg text-slate-300 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-                From your first digital idea to a growing business solution, RAMEVION Technologies aims to help turn real-world challenges into useful, reliable digital experiences.
+                From your first digital idea to an expanding enterprise, RAMEVION Technologies provides custom software development, modern website development, and mobile apps engineered from Bihar for clients worldwide.
               </p>
 
               {/* Brand Vision Highlight */}

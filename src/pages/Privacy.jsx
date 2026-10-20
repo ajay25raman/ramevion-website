@@ -12,6 +12,7 @@ export default function Privacy() {
       <SEOHead
         title="Privacy Policy"
         description="Privacy policy and data transparency statement for RAMEVION Technologies. Understand how client project inquiries and communication details are handled responsibly."
+        canonical="https://ramevion-website-5crv.vercel.app/privacy"
       />
 
       <PageHero

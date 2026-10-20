@@ -35,8 +35,9 @@ export default function About() {
   return (
     <>
       <SEOHead
-        title="About Us — Purpose & Philosophy"
-        description="Learn about RAMEVION Technologies. Born in a Village. Built for the World. An emerging technology brand focused on accessible, practical, and honest digital engineering."
+        title="About RAMEVION Technologies | Software Development in Bihar"
+        description="RAMEVION Technologies is an independent software initiative in Maker, Saran, Bihar, providing website development, mobile apps, and custom software solutions."
+        canonical="https://ramevion-website-5crv.vercel.app/about"
       />
 
       {/* Page Hero */}
@@ -44,7 +45,7 @@ export default function About() {
         badge="About RAMEVION Technologies"
         title="Technology With Purpose."
         highlight="Progress Without Boundaries."
-        description="We are shaping an engineering brand around the belief that useful software should be understandable, accessible, and built around genuine everyday needs."
+        description="An independent software initiative based in Maker, Saran, Bihar, built around the belief that useful software should be understandable, accessible, and dependable."
         breadcrumbs={[{ name: 'About Us' }]}
       />
 
@@ -71,7 +72,7 @@ export default function About() {
                   Most technology companies are formed in major metropolitan hubs, catering primarily to well-funded enterprises. In doing so, millions of village innovators, rural cooperative societies, small-town merchants, and community schools are frequently overlooked or sold bloated, unaffordable software they cannot easily maintain.
                 </p>
                 <p>
-                  RAMEVION Technologies is being built from the ground up to bridge this divide. We combine the grounded humility and practical resourcefulness of village roots with high-standard engineering principles suitable for modern businesses anywhere in the world.
+                  RAMEVION Technologies is an independent software initiative spearheaded by Raman Kumar in Maker, Saran, Bihar. We combine the grounded humility and practical resourcefulness of village roots with high-standard engineering principles suitable for modern businesses anywhere in the world.
                 </p>
                 <p className="text-xs text-slate-400 italic">
                   * Note: We are an emerging brand in our foundational phase. Our vision reflects our clear engineering commitment and standard of work, rather than an unearned claim of established multinational scale.

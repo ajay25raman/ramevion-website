@@ -8,18 +8,18 @@ export default function SEOHead({ title, description, canonical, noindex = false
 
   useEffect(() => {
     const fullTitle = !title
-      ? 'RAMEVION Technologies — Engineering the Future'
-      : title.includes('RAMEVION Technologies')
+      ? 'RAMEVION Technologies — Web, App & Custom Software Development'
+      : title.includes('RAMEVION')
         ? title
         : `${title} | RAMEVION Technologies`;
     document.title = fullTitle;
 
-
-    const defaultDesc = 'RAMEVION Technologies — Born in a Village. Built for the World. Thoughtful, accessible, and dependable digital solutions from website and mobile app development to custom software.';
+    const defaultDesc = 'RAMEVION Technologies delivers custom software development, mobile apps, and website development from Bihar for businesses and innovators worldwide.';
     const finalDesc = description || defaultDesc;
 
-    // Determine canonical URL
-    const canonicalUrl = canonical || (location.pathname === '/' ? `${BASE_URL}/` : `${BASE_URL}${location.pathname}`);
+    // Determine normalized canonical URL without trailing slashes (except root)
+    const normalizedPath = location.pathname === '/' ? '/' : location.pathname.replace(/\/+$/, '');
+    const canonicalUrl = canonical || `${BASE_URL}${normalizedPath}`;
 
     // Update or create meta[name="description"]
     let metaDesc = document.querySelector('meta[name="description"]');
